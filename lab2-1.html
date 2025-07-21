@@ -9776,13 +9776,17 @@ Training completed.
 <p>Entonces, como podemos ver el modelo creado es <strong>realmente</strong> malo. Pero para fines didácticos cumple con su cometido 😁</p>
 <p><strong>NOTA:</strong> Conteste como txt, pdf, comentario en la entrega o en este mismo notebook:</p>
 <ul>
-<li>¿Por qué creen que es el mal rendimiento de este modelo?
-El modelo rinde mal principalmente porque trabajar con imágenes de tan baja resolución en este caso de 16×16 elimina casi todos los detalles faciales y de pelaje que diferencian un gato de un perro, combinado con una arquitectura excesivamente simple ya que cuenta con solo una capa convolucional y un perceptrón que no tiene la capacidad de aprender patrones complejos, lo que provoca un claro under‑fitting.</li>
-<li>¿Qué pueden hacer para mejorarlo?
-Para mejorarlo se podría elevar la resolución de entrada, por ejemplo a 32×32 o 64×64 y añadir varias capas convolucionales adicionales con más filtros, incorporar técnicas como data augmentation y dropout para regularizar, y ajustar hiperparámetros críticos tale como learning rate, optimizador, número de epochs, para que el entrenamiento converja a soluciones de mayor calidad.</li>
-<li>¿Cuáles son las razones para que el modelo sea tan lento?
-El modelo es muy lento porque está implementado enteramente en NumPy con bucles anidados en Python para cada posición de convolución y pooling, sin aprovechar aceleración en GPU ni librerías optimizadas como CuDNN, TensorFlow o PyTorch, por lo que cada operación de copia y cálculo secuencial añade un gran sobrecoste computacional.</li>
+<li>¿Por qué creen que es el mal rendimiento de este modelo?</li>
 </ul>
+<p>El modelo rinde mal principalmente porque trabajar con imágenes de tan baja resolución en este caso de 16×16 elimina casi todos los detalles faciales y de pelaje que diferencian un gato de un perro, combinado con una arquitectura excesivamente simple ya que cuenta con solo una capa convolucional y un perceptrón que no tiene la capacidad de aprender patrones complejos, lo que provoca un claro under‑fitting.</p>
+<ul>
+<li>¿Qué pueden hacer para mejorarlo?</li>
+</ul>
+<p>Para mejorarlo se podría elevar la resolución de entrada, por ejemplo a 32×32 o 64×64 y añadir varias capas convolucionales adicionales con más filtros, incorporar técnicas como data augmentation y dropout para regularizar, y ajustar hiperparámetros críticos tale como learning rate, optimizador, número de epochs, para que el entrenamiento converja a soluciones de mayor calidad.</p>
+<ul>
+<li>¿Cuáles son las razones para que el modelo sea tan lento?</li>
+</ul>
+<p>El modelo es muy lento porque está implementado enteramente en NumPy con bucles anidados en Python para cada posición de convolución y pooling, sin aprovechar aceleración en GPU ni librerías optimizadas como CuDNN, TensorFlow o PyTorch, por lo que cada operación de copia y cálculo secuencial añade un gran sobrecoste computacional.</p>
 <p>Ahora pasemos a ver como hacer algo mejor para el mismo tipo de tarea usando PyTorch 😊</p>
 <h2 id="Parte-2---Usando-PyTorch">Parte 2 - Usando PyTorch<a class="anchor-link" href="#Parte-2---Usando-PyTorch">¶</a></h2><p>Muy bien, hemos entendido ahora de mejor manera todo lo que sucede dentro de una red neuronal convolucional. Pasamos desde definir los pasos de forward, hasta incursionar en cómo realizar los pasos de backpropagation y al final, vimos una forma simple pero academicamente efectiva para entender lo que sucede dentro de una CNN.</p>
 <p>Ahora, subamos un nivel y pasemos a ver como PyTorch nos ayuda a crear una CNN básica pero efectiva. Pero antes, es necesario que definamos la unidad básica de PyTorch, esta es conocida como Tensor 🤔</p>
@@ -10511,8 +10515,14 @@ Estimated Total Size (MB): 4.11
 <p><strong>NOTA:</strong> Conteste como txt, pdf, comentario en la entrega o en este mismo notebook:</p>
 <ul>
 <li>¿Qué haría para mejorar el rendimiento del modelo?</li>
+</ul>
+<p>Uso de GPU y entrenamiento en CUDA: trasladar el modelo y los tensores al dispositivo CUDA acelera drásticamente el forward/backward pass, permitiendo entrenar más rápido y con más épocas.</p>
+<p>Optimización avanzada y más epochs: cambiar de un optimizador básico a Adam o SGD con momentum, junto con schedulers de tasa de aprendizaje, mejora la convergencia.</p>
+<ul>
 <li>¿Qué haría para disminuir las posibilidades de overfitting?</li>
 </ul>
+<p>Data augmentation con torchvision.transforms: aplicar transformaciones aleatorias (rotaciones, flips, cambios de brillo/contraste) genera ejemplos sintéticos que enriquecen el dataset y obligan al modelo a ser más robusto.</p>
+<p>Dropout en las capas ocultas: insertar capas de nn.Dropout(p) en la arquitectura ayuda a desactivar neuronas de forma aleatoria durante el entrenamiento y se omite automáticamente con model.eval() en la fase de evaluación, reduciendo la coadaptación de features.</p>
 </div>
 </div>
 </div>
